@@ -1,25 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Time from "./Components/Time";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [toggle, setToggle] = useState(false);
+
+    const toggletime = () => {
+        setToggle(!toggle);
+    };
+    return (
+        <div className="container mt-5 p-5 bg-light">
+            <button onClick={toggletime} className="btn btn-dark">
+                {toggle ? "Hide Time" : "Show Time"}
+            </button>
+            <hr />
+
+            {toggle ? <Time /> : <h3>Click to watch the live time</h3>}
+        </div>
+    );
+};
 
 export default App;
