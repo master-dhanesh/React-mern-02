@@ -1,13 +1,10 @@
-import React from "react";
 import Create from "./Components/Create";
-import NavWrapper from "./helpers/NavWrapper";
 
 const App = () => {
     return (
-        <NavWrapper>
-            This is Casual Data
+        <div className="container mt-5 p-2">
             <Create />
-        </NavWrapper>
+        </div>
     );
 };
 
