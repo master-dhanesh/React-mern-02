@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Changedata from "./Components/Changedata";
 import MyDate from "./Components/Date";
 import MyTime from "./Components/Time";
 
@@ -6,9 +7,15 @@ const App = () => {
     const [toggle, setToggle] = useState(false);
     const [datetime, setDatetime] = useState(new Date());
 
+    const [data, setData] = useState("App.js Data");
+
     const toggletime = () => {
         setToggle(!toggle);
     };
+
+    // const changeData = (newdata) => {
+    //     setData(newdata);
+    // };
 
     setInterval(() => {
         setDatetime(new Date());
@@ -30,6 +37,10 @@ const App = () => {
             ) : (
                 <h3>Click to watch the live time</h3>
             )}
+            <hr />
+            <Changedata data={data} setData={setData}>
+                Extra data of Change Data JS file
+            </Changedata>
         </div>
     );
 };
