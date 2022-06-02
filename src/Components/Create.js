@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import PropTypes from "prop-types";
 
-const Create = () => {
+const Create = ({ todos, setTodos, name }) => {
+    console.log(name);
     const [todo, setTodo] = useState({
         title: "",
         desc: "",
@@ -11,7 +14,12 @@ const Create = () => {
 
     const HandleSubmit = (e) => {
         e.preventDefault();
-        console.log(todo);
+        let sendTodo = {
+            id: uuidv4(),
+            ...todo,
+        };
+
+        setTodos([...todos, sendTodo]);
         setTodo({ title: "", desc: "" });
     };
 
@@ -36,6 +44,10 @@ const Create = () => {
             <button className="btn btn-primary">ADD TODO</button>
         </form>
     );
+};
+
+Create.defaultProps = {
+    name: "Creating Todos",
 };
 
 export default Create;
