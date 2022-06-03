@@ -19,7 +19,10 @@ const Create = ({ todos, setTodos, name }) => {
             ...todo,
         };
 
-        setTodos([...todos, sendTodo]);
+        let newTodos = [...todos, sendTodo];
+        localStorage.setItem("todos", JSON.stringify(newTodos));
+
+        setTodos(newTodos);
         setTodo({ title: "", desc: "" });
     };
 
@@ -41,7 +44,7 @@ const Create = ({ todos, setTodos, name }) => {
                 onChange={ChangeHandler}
                 value={todo.desc}
             />
-            <button className="btn btn-primary">ADD TODO</button>
+            <button className="btn btn-primary tomato">ADD TODO</button>
         </form>
     );
 };
