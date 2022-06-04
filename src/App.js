@@ -19,6 +19,11 @@ class App extends Component {
             about: "New Data Of The State...",
             show: !this.state.show,
         });
+
+        this.setState((prevProps, prevState) => ({
+            about: "New Data Of The State...",
+            show: !prevState.show,
+        }));
     };
 
     render() {
