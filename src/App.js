@@ -1,59 +1,33 @@
-import React, { Component } from "react";
-import Chind from "./Components/Chind";
-import axios from "axios";
+import { useState } from "react";
+import { nanoid } from "nanoid";
+import "./App.css";
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        console.log("App.js Constructor");
-    }
+const App = () => {
+    const [url, setUrl] = useState("");
 
-    state = {
-        about: "",
-        show: false,
-        photos: [],
+    const SubmitHandler = (e) => {
+        e.preventDefault();
+        const newData = { url, _id: nanoid() };
+        console.log(newData);
     };
 
-    ChangeState = () => {
-        this.setState({
-            about: "New Data Of The State...",
-            show: !this.state.show,
-        });
-
-        this.setState((prevProps, prevState) => ({
-            about: "New Data Of The State...",
-            show: !prevState.show,
-        }));
-    };
-
-    render() {
-        console.log("App.js Render");
-        console.log(this.state);
-        return (
-            <div className="container mt-5 alert alert-dark">
-                <h2>{this.state.about}</h2>
-                <button className="btn btn-dark" onClick={this.ChangeState}>
-                    Change
-                </button>
-                <hr />
-                {this.state.show ? <Chind /> : ""}
-            </div>
-        );
-    }
-
-    async componentDidMount() {
-        // we can change the state here
-        console.log("App.js ComponentDidMount");
-        const { data } = await axios.get(
-            "https://jsonplaceholder.typicode.com/photos"
-        );
-        this.setState({ about: "chnaged in mount", photos: data });
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        console.log("App.js ComponentDidUpdate");
-        console.log(prevProps, prevState);
-    }
-}
+    return (
+        <div>
+            <form
+                onSubmit={SubmitHandler}
+                className="container mt-5 m-auto w-50 d-flex justify-content-center"
+            >
+                <input
+                    type="url"
+                    className="w-50 me-3 form-control"
+                    placeholder="Image URL"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                />
+                <button className="btn btn-dark tomato">Add Image</button>
+            </form>
+        </div>
+    );
+};
 
 export default App;
