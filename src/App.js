@@ -1,31 +1,29 @@
-import { useState } from "react";
-import { nanoid } from "nanoid";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import "./App.css";
+import Create from "./components/Create";
+import Show from "./components/Show";
 
 const App = () => {
-    const [url, setUrl] = useState("");
+    const [images, setImages] = useState([]);
 
-    const SubmitHandler = (e) => {
-        e.preventDefault();
-        const newData = { url, _id: nanoid() };
-        console.log(newData);
+    useEffect(() => {
+        if (images.length === 0) FetchImages();
+    }, [images]);
+
+    const FetchImages = async () => {
+        const { data } = await axios.get(`https://picsum.photos/v2/list`);
+        const updatedData = data.map((d) => ({
+            _id: d.id,
+            url: d.download_url,
+        }));
+        setImages(updatedData);
     };
 
     return (
         <div>
-            <form
-                onSubmit={SubmitHandler}
-                className="container mt-5 m-auto w-50 d-flex justify-content-center"
-            >
-                <input
-                    type="url"
-                    className="w-50 me-3 form-control"
-                    placeholder="Image URL"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                />
-                <button className="btn btn-dark tomato">Add Image</button>
-            </form>
+            <Create images={images} setImages={setImages} />
+            <Show images={images} setImages={setImages} />
         </div>
     );
 };
