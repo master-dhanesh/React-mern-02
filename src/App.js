@@ -1,29 +1,24 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import "./App.css";
+import React from "react";
 import Create from "./components/Create";
+import Home from "./components/Home";
+import Navbar from "./components/Navbar";
 import Show from "./components/Show";
 
+import { Routes, Route } from "react-router-dom";
+import Details from "./components/Details";
+
 const App = () => {
-    const [images, setImages] = useState([]);
-
-    useEffect(() => {
-        if (images.length === 0) FetchImages();
-    }, [images]);
-
-    const FetchImages = async () => {
-        const { data } = await axios.get(`https://picsum.photos/v2/list`);
-        const updatedData = data.map((d) => ({
-            _id: d.id,
-            url: d.download_url,
-        }));
-        setImages(updatedData);
-    };
-
     return (
         <div>
-            <Create images={images} setImages={setImages} />
-            <Show images={images} setImages={setImages} />
+            <Navbar />
+
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/create" element={<Create />} />
+                <Route path="/show" element={<Show />}>
+                    <Route path="/show/:name" element={<Details />} />
+                </Route>
+            </Routes>
         </div>
     );
 };

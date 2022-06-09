@@ -1,31 +1,25 @@
 import React from "react";
+import { Link, Outlet } from "react-router-dom";
 
-const Show = ({ images, setImages }) => {
-    let ImageLists = "Loading...";
-    if (images.length > 0) {
-        ImageLists = images.map((image) => (
-            <div key={image._id} className="w-25 ms-5 mb-5">
-                <div
-                    className="w-100"
-                    style={{
-                        height: "250px",
-                        backgroundImage: `url(${image.url})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundRepeat: "no-repeat",
-                    }}
-                ></div>
-            </div>
-        ));
-    }
-
+const Show = () => {
     return (
-        <div className="container mt-3">
-            <hr />
-            <div className="w-100 d-flex justify-content-start align-items-start flex-wrap">
-                {ImageLists}
+        <>
+            <div className="p-5 container alert alert-info">
+                <h1>This is Show page.</h1>
+                <ol>
+                    <li>
+                        <Link to="/show/john">John Doe</Link>
+                    </li>
+                    <li>
+                        <Link to="/show/anney">Anney Besent</Link>
+                    </li>
+                    <li>
+                        <Link to="/show/json">Json</Link>
+                    </li>
+                </ol>
             </div>
-        </div>
+            <Outlet />
+        </>
     );
 };
 
