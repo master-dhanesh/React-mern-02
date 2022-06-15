@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, useLocation, useParams, Link } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 const Details = () => {
     const navigate = useNavigate();

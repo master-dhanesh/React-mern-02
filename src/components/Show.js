@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
+import Showchild from "./Showchild";
 
 const Show = () => {
     return (
@@ -17,6 +18,9 @@ const Show = () => {
                         <Link to="/show/json">Json</Link>
                     </li>
                 </ol>
+                <hr className="w-50" />
+                <Showchild />
+
             </div>
             <Outlet />
         </>
