@@ -1,13 +1,14 @@
 import { useContext } from 'react';
-import { ContextData } from '../App';
+import { IndexContext } from '../context';
+
 
 const Showchild = () => {
-    const {data, setData} = useContext(ContextData);
+  const {data, setData} = useContext(IndexContext);
   return (
     <div>
         <h4>Showchild Component</h4>
         <hr className='m-auto w-25' />
-            <h2>{data}</h2>
+        <p>{data}</p>
         </div>
   )
 }

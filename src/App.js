@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState } from "react";
 import Create from "./components/Create";
 import Home from "./components/Home";
 import Navbar from "./components/Navbar";
@@ -8,8 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import Details from "./components/Details";
 import Notfound from "./components/Notfound";
 
-
-export const ContextData = createContext();
+import IndexContext from './context';
 
 const App = () => {
     const [data, setData] = useState("Data to transfer")
@@ -19,7 +18,7 @@ const App = () => {
 
             <Navbar />
             
-            <ContextData.Provider value={{data, setData}}>
+            <IndexContext value={{data, setData}}>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/create" element={<Create />} />
@@ -29,7 +28,7 @@ const App = () => {
                 </Route>
                 <Route path="*" element={<Notfound />} />
             </Routes>
-            </ContextData.Provider>
+            </IndexContext>
         </div>
     );
 };

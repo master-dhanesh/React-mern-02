@@ -2,11 +2,8 @@ import { useContext } from "react";
 import "../App.css";
 import { Link, NavLink } from "react-router-dom";
 
-import {ContextData } from '../App'
 
 const Navbar = () => {
-    const first = useContext(ContextData);
-    console.log(first)
     return (
         <nav className="container mt-5">
             <ul>
