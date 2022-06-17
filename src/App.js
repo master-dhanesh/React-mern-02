@@ -1,45 +1,34 @@
-import { useRef, useState } from "react";
-import Inputs from "./components/Inputs";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    decrement,
+    increment,
+    incrementByAmount,
+    incrementByAmountAsync,
+} from "./store/reducers/counterSlice";
 
 const App = () => {
-    const [valid, setValid] = useState(false);
+    const { value } = useSelector((state) => state.counter);
+    const dispatch = useDispatch();
 
-    const inputRef = useRef(null);
-    // inputRef.current.style.color = "red";
-    const ChangeHandler = (e) => {
-        if (inputRef.current.value.length > 4) {
-            setValid(false);
-        } else {
-            setValid(true);
-        }
+    const OnIncrement = () => {
+        dispatch(increment());
     };
-    return (
-        <div className="container mt-3 alert">
-            <form>
-                <input
-                    type="text"
-                    className="form-control w-25"
-                    placeholder="Username"
-                    ref={inputRef}
-                    onChange={ChangeHandler}
-                    name="username"
-                />
-                <Inputs
-                    type="number"
-                    ClassName="mt-3 form-control w-25"
-                    placeholder="Contact Details"
-                    mref={inputRef}
-                    OnChange={ChangeHandler}
-                    name="contact"
-                />
-                {valid && (
-                    <p className="text-danger">
-                        Usernane is required and need atleast 4 characters
-                    </p>
-                )}
 
-                <button className="btn btn-primary mt-3">Submit</button>
-            </form>
+    const OnDecrement = () => {
+        dispatch(decrement());
+    };
+
+    const OnIncByValue = () => {
+        dispatch(incrementByAmountAsync(12));
+    };
+
+    return (
+        <div className="mt-5 container ">
+            <button onClick={OnDecrement}>-</button>
+            <span className="ms-3 me-3">{value}</span>
+            <button onClick={OnIncrement}>+</button>
+            <br />
+            <button onClick={OnIncByValue}>Increment By Value</button>
         </div>
     );
 };
