@@ -1,46 +1,55 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
+import React from "react";
+import { app } from "./config";
 import {
-    decrement,
-    increment,
-    changeByAmount,
-    fetchPosts,
-    fetchPostsAsync,
-} from "./store/features/counter/CounterSlice";
-
+    getFirestore,
+    collection,
+    addDoc,
+    getDocs,
+    deleteDoc,
+    getDoc,
+    doc,
+} from "firebase/firestore";
+import { async } from "@firebase/util";
 const App = () => {
-    const { value } = useSelector((state) => state.counter);
-    const dispatch = useDispatch();
+    const db = getFirestore(app);
+    const currentCollection = collection(db, "users");
 
-    const IncrementHandler = () => {
-        dispatch(increment());
+    const addUser = async () => {
+        const docRef = await addDoc(currentCollection, {
+            name: "john doe",
+            username: "john.doe",
+        });
+        console.log(docRef);
     };
 
-    const DecrementHandler = () => {
-        dispatch(decrement());
+    const readUsers = async () => {
+        const qs = await getDocs(currentCollection);
+        const userData = [];
+        qs.forEach((doc) => {
+            userData.push({ id: doc.id, ...doc.data() });
+            // console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+        });
+        console.log(userData);
     };
 
-    const ChangeByAmountHandler = () => {
-        dispatch(changeByAmount(10));
+    const deleteUser = async () => {
+        const docRef = await doc(currentCollection, "kIxLDjUuKkHzX4rn9hfT");
+        await deleteDoc(docRef);
+        console.log("User Deleted");
     };
-
-    useEffect(() => {
-        dispatch(fetchPostsAsync());
-    }, []);
 
     return (
-        <div className="container mt-5 alert alert-light">
-            <button onClick={IncrementHandler} className="btn btn-primary me-3">
-                +
+        <div className="container mt-5 ">
+            <button onClick={addUser} className="btn btn-primary me-3">
+                Add Firestore Doc
             </button>
-            <span className="h1">{value}</span>
-            <button onClick={DecrementHandler} className="btn btn-danger ms-3">
-                -
+
+            <button onClick={readUsers} className="btn btn-primary me-3">
+                Read Firestore Docs
             </button>
-            <hr />
-            <button onClick={ChangeByAmountHandler} className="btn btn-dark">
-                Change By Amount
+
+            <button onClick={deleteUser} className="btn btn-danger me-3">
+                Delete Firestore Docs
             </button>
         </div>
     );
