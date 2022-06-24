@@ -1,59 +1,70 @@
 import { app } from "./config";
 import {
-    deleteObject,
-    getDownloadURL,
-    getStorage,
-    listAll,
-    ref,
-    uploadBytes,
-} from "firebase/storage";
-import { random } from "nanoid";
-
+    createUserWithEmailAndPassword,
+    getAuth,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signOut,
+} from "firebase/auth";
+import { useState } from "react";
+import { useEffect } from "react";
 const App = () => {
-    const storage = getStorage(app);
+    const [isUser, setIsUser] = useState(false);
+    const auth = getAuth(app);
+    const user = auth.currentUser;
 
-    const Uploadhandler = async (e) => {
-        let imagename =
-            Math.floor(Math.random() * 1000) +
-            "." +
-            e.target.files[0].name.split(".").at(-1);
-
-        const storageRef = await ref(storage, imagename);
-        await uploadBytes(storageRef, e.target.files[0]);
-        console.log("Image Uploaded");
-    };
-
-    const ReadImages = async () => {
-        const listRef = await ref(storage);
-        const { items } = await listAll(listRef);
-        items.forEach(async (itemRef) => {
-            const url = await getDownloadURL(itemRef);
-            console.log(url);
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setIsUser(true);
+            }
         });
+    }, [isUser]);
+
+    const SignupHandler = async () => {
+        try {
+            const res = await createUserWithEmailAndPassword(
+                auth,
+                "john@doe.john",
+                "1234567890"
+            );
+
+            console.log("User registred, required signin");
+        } catch (error) {
+            console.log(error.message);
+        }
     };
 
-    const DeleteImage = async () => {
-        const imageRef = await ref(storage, "165.jpg");
-        // const url = await getDownloadURL(imageRef);
-        // console.log(url);
-        await deleteObject(imageRef);
-        console.log("Image Deleted");
+    const SigninHandler = async () => {
+        try {
+            const res = await signInWithEmailAndPassword(
+                auth,
+                "john@doe.john",
+                "1234567890"
+            );
+            res.user && setIsUser(true);
+            console.log("User signed in");
+        } catch (error) {
+            console.log(error.message);
+        }
     };
 
+    const SignoutHandler = async () => {
+        await signOut(auth);
+        console.log("User logged out");
+    };
+
+    console.log(isUser);
     return (
-        <div className="container mt-5 ">
-            <input
-                onChange={Uploadhandler}
-                type="file"
-                className="form-control w-50 mb-3"
-            />
-
-            <button onClick={ReadImages} className="btn btn-primary me-3">
-                Read Images
+        <div className="container mt-5">
+            <button onClick={SignupHandler} className="btn btn-primary me-3">
+                Signup
             </button>
-
-            <button onClick={DeleteImage} className="btn btn-danger me-3">
-                Delete Image
+            <button onClick={SigninHandler} className="btn btn-primary me-3">
+                Signin
+            </button>
+            <button onClick={SignoutHandler} className="btn btn-primary me-3">
+                Logout
             </button>
         </div>
     );
